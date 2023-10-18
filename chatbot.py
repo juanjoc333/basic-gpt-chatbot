@@ -4,14 +4,19 @@ from dotenv import dotenv_values
 config = dotenv_values(".env")
 openai.api_key = config.get("OPENAI_API_KEY")
 
-res = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo",
-    messages=[
-        {
-            "role": "user",
-            "content": "Tell me a computer science joke.",
-        },
-    ])
+while True:
+    try:
+        user_input = input("You: ")
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {
+                    "role": "user",
+                    "content": user_input,
+                },
+            ])
 
-
-print(res)
+        print("Bot:", response.choices[0].message.content)
+    except KeyboardInterrupt:
+        print("Exiting...")
+        break
